@@ -4,10 +4,12 @@
 import os
 import logging
 import warnings
-from google.adk.agents import SequentialAgent  # type: ignore
+from google.adk.agents import SequentialAgent  
 from dotenv import load_dotenv
-from .root_agent_prompt import return_instructions_root
 from .sub_agents.persona_identification import persona_identification_agent
+from .sub_agents.scenario_selection import scenario_selection_agent
+from .sub_agents.interaction_play import interaction_play_agent
+from .sub_agents.feedback import feedback_agent
 
 warnings.filterwarnings("ignore", category=UserWarning, module=".*pydantic.*")
 
@@ -15,13 +17,13 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 root_agent = SequentialAgent(
-    #model=str(os.getenv("GOOGLE_GENAI_MODEL")),
-    #model="gemini-2.5-flash",
-    name='root_agent',
-   # instruction=return_instructions_root(),
-    description=('Angry Nurse Agent'),
-    sub_agents=[
-        persona_identification_agent
+    name='Grumpy Nurse Agent',
+    description=('Grumpy Nurse Agent'),
+    sub_agents= [
+        persona_identification_agent,
+        scenario_selection_agent,
+        interaction_play_agent,
+        feedback_agent
     ],
 )
 
